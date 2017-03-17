@@ -1,0 +1,70 @@
+<!--
+Usage:
+./NetworkLauncher.sh [opt] [value]
+-d: ledger database type, default=goleveldb
+-f: profile string, default=testOrg
+-h: hash type, default=SHA2
+-k: number of kafka, default=solo
+-n: number of channels, default=1
+-o: number of orderers, default=1
+-p: number of peers per organization, default=1
+-r: number of organizations, default=1
+-s: security type, default=256
+-t: ledger orderer service type [solo|kafka], default=solo
+-c: crypto directory, default=$GOPATH/src/github.com/hyperledger/fabric/common/tools/cryptogen
+-w: host ip 1, default=0.0.0.0
+-F: local MSP base directory, default=$GOPATH/src/github.com/hyperledger/fabric/common/tools/cryptogen/crypto-config
+-G: src MSP base directory, default=/opt/hyperledger/fabric/msp/crypto-config
+-->
+<div class="logo">
+  <img src="src/assets/img/ibm-logo.png" width="150px" />
+</div>
+<form class="launch-form" [formGroup]="launchForm" (ngSubmit)="launch($event)">
+  <md-select formControlName="ledgerType" placeholder="ledger database type" class="full-width">
+     <md-option *ngFor="let type of ledgerTypes" [value]="type.value">{{ type.name }}</md-option>
+  </md-select>
+  <md-input-container class="full-width">
+    <input formControlName="profileString" mdInput placeholder="profile string" value='testOrg'>
+  </md-input-container>
+  <md-select formControlName="hashType"  placeholder="hash type" class="full-width">
+     <md-option *ngFor="let type of hashTypes" [value]="type.value">{{ type.name }}</md-option>
+  </md-select>
+  <md-input-container class="full-width">
+    <input formControlName="numberOfKafka" type="number" min="0"  mdInput placeholder="number of kafka">
+  </md-input-container>
+  <md-input-container class="full-width">
+    <input formControlName="numberOfChannels" type="number" min="0" mdInput placeholder="number of channels">
+  </md-input-container>
+  <md-input-container class="full-width">
+    <input formControlName="numberOfOrderers" type="number" min="0" mdInput placeholder="number of orderers">
+  </md-input-container>
+  <md-input-container class="full-width">
+    <input formControlName="numberOfPeersPerOrganization" type="number" min="0" mdInput placeholder="number of peers per organization">
+  </md-input-container>
+  <md-input-container class="full-width">
+    <input formControlName="numberOfOrganizations" type="number" min="0" mdInput placeholder="number of organizations">
+  </md-input-container>
+  <md-select formControlName="securityType" placeholder="security type" class="full-width">
+     <md-option *ngFor="let type of securityTypes" [value]="type.value">{{ type.name }}</md-option>
+  </md-select>
+  <md-select formControlName="ordererType" placeholder="ledger orderer service type" class="full-width">
+     <md-option *ngFor="let type of ordererTypes" [value]="type.value">{{ type.name }}</md-option>
+  </md-select>
+  <md-input-container class="full-width">
+    <input formControlName="cryptoDirectory" mdInput placeholder="crypto directory">
+  </md-input-container>
+  <md-input-container class="full-width">
+    <input formControlName="hostIp" mdInput placeholder="host ip 1">
+  </md-input-container>
+  <md-input-container class="full-width">
+    <input formControlName="localMSP" mdInput placeholder="local MSP base directory">
+  </md-input-container>
+  <md-input-container class="full-width">
+    <input formControlName="srcMSP" mdInput placeholder="src MSP base directory">
+  </md-input-container>
+  <div class="button-wrapper">
+    <button md-raised-button type="submit">Launch Network</button>
+  </div>
+</form>
+
+<confirmation-dialog hidden="true"></confirmation-dialog>
