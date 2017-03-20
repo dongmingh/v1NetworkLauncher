@@ -3,8 +3,7 @@
 This project uses Angular 2 and was generated with [Angular CLI](https://cli.angular.io/). It also uses a simple Express.js server to collect POST parameters and execute a shell script.
 
 * Visit `http://nodejs.org` and install the latest version of Node.js.
-* Run `npm install -g @angular/cli` to install the Angular CLI.
-* Run `npm install -g typescript` to install Typescript.
+* Run `npm install -g typescript concurrently @angular/cli` to install the Angular CLI, Typescript, and Concurrently (needed to start the servers).
 
 ## Development Environment
 
