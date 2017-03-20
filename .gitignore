@@ -1,0 +1,4 @@
+node_modules/
+server/configtx.yaml
+server/docker-compose.yml
+
