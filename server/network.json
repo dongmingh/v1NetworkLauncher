@@ -10,6 +10,7 @@
     "evtAddress": "0.0.0.0",
     "evtPort": "6051",
     "version": "2",
+    "CAPort": "7054",
     "networks":
             "bridge",
     "services": {
@@ -124,6 +125,25 @@
                   "orderer0",
                   "peer0"
             ],
+            "networks": [
+                  "bridge"
+            ]
+        },
+        
+        "ca": {
+           "image": "hyperledger/fabric-ca",
+            "environment": {
+                 "CA_CERTIFICATE":"peerORg0_cert.pem",
+                 "CA_KEY_CERTIFICATE":"peer0Org0_pk.pem"
+            },
+            "command": "sh '-c sleep 10; fabric-ca server start -ca /.fabric-ca/$$CA_CERTIFICATE -ca-key /.fabric-ca/$$CA_KEY_CERTIFICATE -config /etc/hyperledger/fabric-ca/server-config.json address 0'",
+            "volumes": [
+                    "./tmp/ca:/.fabric-ca"
+            ],
+            "ports": [
+                  "7054:7054"
+            ],
+            "container_name": "caID",
             "networks": [
                   "bridge"
             ]

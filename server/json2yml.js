@@ -89,13 +89,16 @@ console.log('number of Kafka Broker: ', addBroker);
 var nOrg = parseInt(process.argv[6]);;
 console.log('number of orgs: ', nOrg);
 
+var addCA = parseInt(process.argv[7]);;
+console.log('number of CAs: ', addCA);
+
 var addVP = nPeerPerOrg*nOrg;
 console.log('number of peer: ', addVP);
 
 //console.log(' input argv length', process.argv.length);
 var dbType = 'none';
-if (process.argv.length == 8) {
-   dbType = process.argv[7];
+if (process.argv.length == 9) {
+   dbType = process.argv[8];
 }
 console.log('DB type: ', dbType);
 
@@ -117,6 +120,7 @@ var vp0Addr;
 var vp0Port;
 var evtAddr;
 var evtPort;
+var ca0Port;
 var kafkaAddr;
 var kafkaPort;
 var tmp;
@@ -135,22 +139,22 @@ for ( i0=0; i0<top_key.length; i0++ ) {
     var lvl0_obj = cfgContent[top_key[i0]];
     var lvl1_key = Object.keys(lvl0_obj);
     if ( top_key[i0] == 'ordererAddress' ) {
-         ordererAddr = lvl0_obj; 
+         ordererAddr = lvl0_obj;
          console.log('orderer address:', ordererAddr);
     } else if ( top_key[i0] == 'ordererPort' ) {
-         ordererPort = parseInt(lvl0_obj); 
+         ordererPort = parseInt(lvl0_obj);
          console.log('orderer Port:', ordererPort);
     } else if ( top_key[i0] == 'couchdbAddress' ) {
-         couchdbAddr = lvl0_obj; 
+         couchdbAddr = lvl0_obj;
          console.log('couchdb address:', couchdbAddr);
     } else if ( top_key[i0] == 'couchdbPort' ) {
-         couchdbPort = parseInt(lvl0_obj); 
+         couchdbPort = parseInt(lvl0_obj);
          console.log('couchdb Port:', couchdbPort);
     } else if ( top_key[i0] == 'vp0Address' ) {
-         vp0Addr = lvl0_obj; 
+         vp0Addr = lvl0_obj;
          console.log('peer0 address:', vp0Addr);
     } else if ( top_key[i0] == 'vp0Port' ) {
-         vp0Port = parseInt(lvl0_obj); 
+         vp0Port = parseInt(lvl0_obj);
          console.log('peer0 Port:', vp0Port);
     } else if ( top_key[i0] == 'kafkaAddress' ) {
          kafkaAddr = lvl0_obj;
@@ -167,6 +171,9 @@ for ( i0=0; i0<top_key.length; i0++ ) {
     } else if ( top_key[i0] == 'version' ) {
          buff = top_key[i0] + ":" + " '" + lvl0_obj + "'" + "\n";
          fs.appendFileSync(dFile, buff);
+    } else if ( top_key[i0] == 'CAPort' ) {
+               CAPort = parseInt(lvl0_obj);
+               console.log('CA Port:', CAPort);
     } else if ( top_key[i0] == 'networks' ) {
          buff = top_key[i0] + ":" + "\n";
          fs.appendFileSync(dFile, buff);
@@ -214,7 +221,7 @@ for ( i0=0; i0<top_key.length; i0++ ) {
 
                                 fs.appendFileSync(dFile, buff);
                             }
-                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' ) 
+                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' )
                                     || ( lvl2_key[k] == 'restart') ) {
                             buff = '  ' + '  ' + lvl2_key[k] + ': ' + lvl1_obj[lvl2_key[k]] + '\n';
                             fs.appendFileSync(dFile, buff);
@@ -350,7 +357,7 @@ for ( i0=0; i0<top_key.length; i0++ ) {
                                     }
 
                                 }
-                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' ) 
+                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' )
                                     || ( lvl2_key[k] == 'restart') ) {
                             buff = '  ' + '  ' + lvl2_key[k] + ': ' + lvl1_obj[lvl2_key[k]] + '\n';
                             fs.appendFileSync(dFile, buff);
@@ -445,7 +452,7 @@ for ( i0=0; i0<top_key.length; i0++ ) {
                                     }
 
                                 }
-                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' ) 
+                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' )
                                     || ( lvl2_key[k] == 'restart') ) {
                             buff = '  ' + '  ' + lvl2_key[k] + ': ' + lvl1_obj[lvl2_key[k]] + '\n';
                             fs.appendFileSync(dFile, buff);
@@ -498,7 +505,7 @@ for ( i0=0; i0<top_key.length; i0++ ) {
                                         buff = '  ' + '    - ' + lvl3_key[m] + '=' +lvl2_obj[lvl3_key[m]] + '\n';
                                         fs.appendFileSync(dFile, buff);
                                 }
-                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' ) 
+                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' )
                                     || ( lvl2_key[k] == 'restart') ) {
                             buff = '  ' + '  ' + lvl2_key[k] + ': ' + lvl1_obj[lvl2_key[k]] + '\n';
                             fs.appendFileSync(dFile, buff);
@@ -598,7 +605,7 @@ for ( i0=0; i0<top_key.length; i0++ ) {
                                     }
 
                                 }
-                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' ) 
+                        } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' )
                                     || ( lvl2_key[k] == 'restart') ) {
                             buff = '  ' + '  ' + lvl2_key[k] + ': ' + lvl1_obj[lvl2_key[k]] + '\n';
                             fs.appendFileSync(dFile, buff);
@@ -729,7 +736,7 @@ for ( i0=0; i0<top_key.length; i0++ ) {
                             }
 
                         }
-                    } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' ) 
+                    } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' )
                             || ( lvl2_key[k] == 'restart') || ( lvl2_key[k] == 'container_name') || ( lvl2_key[k] == 'tty') ) {
                         buff = '  ' + '  ' + lvl2_key[k] + ': ' + lvl1_obj[lvl2_key[k]] + '\n';
                         fs.appendFileSync(dFile, buff);
@@ -806,64 +813,79 @@ for ( i0=0; i0<top_key.length; i0++ ) {
                 buff = '\n';
                 fs.appendFileSync(dFile, buff);
 
-             } else {
-                if (lvl1_key[i] == 'ca' ) {
-                    CA=1;
-                }
-                buff = '  ' + lvl1_key[i] +':' + '\n';
-                fs.appendFileSync(dFile, buff);
+             } else if (lvl1_key[i] == 'ca') {
+                   CA=1;
+                   for ( v = 0; v < addCA; v++ ) {
+                       tmp_name = lvl1_key[i] + v;
+                       tmp_port = ca0Port + v;
+                       buff = '  ' + tmp_name +':' + '\n';
+                       fs.appendFileSync(dFile, buff);
 
-                // header 3
-                for ( k=0; k<lvl2_key.length; k++ ) {
-                    if ( lvl2_key[k] == 'environment' ) {
-                        lvl2_obj = lvl1_obj[lvl2_key[k]];
-                        lvl3_key = Object.keys(lvl2_obj);
-                        //console.log('lvl2_obj: ', lvl2_obj);
-                        //console.log('lvl3_key: ', lvl3_key);
+                       buff = '  ' + lvl1_key[i] +':' + '\n';
+                       //console.log('lvl3_key: ', lvl3_key);
+                       // header 3
+                       for ( k=0; k<lvl2_key.length; k++ ) {
+                         if ( (lvl2_key[k] == 'environment') ) {
+                                 lvl2_obj = lvl1_obj[lvl2_key[k]];
+                                 lvl3_key = Object.keys(lvl2_obj);
 
-                        buff = '  ' + '  ' + lvl2_key[k] + ': ' + '\n';
-                        fs.appendFileSync(dFile, buff);
+                                 buff = '  ' + '  ' + lvl2_key[k] + ': ' + '\n';
+                                 fs.appendFileSync(dFile, buff);
 
-                        // header 4
-                        for ( m=0; m< lvl3_key.length; m++ ) {
-                            buff = '  ' + '    - ' + lvl3_key[m] + '=' +lvl2_obj[lvl3_key[m]] + '\n';
-                            fs.appendFileSync(dFile, buff);
+                                 // header 4
+                                 for ( m=0; m< lvl3_key.length; m++ ) {
+                                         buff = '  ' + '    - ' + lvl3_key[m] + '=' +lvl2_obj[lvl3_key[m]] + '\n';
+                                         fs.appendFileSync(dFile, buff);
+                                 }
+                           } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' )
+                                            || ( lvl2_key[k] == 'restart') || ( lvl2_key[k] == 'tty') ) {
+                               buff = '  ' + '  ' + lvl2_key[k] + ': ' + lvl1_obj[lvl2_key[k]] + '\n';
+                               fs.appendFileSync(dFile, buff);
 
-                        }
-                    } else if ( ( lvl2_key[k] == 'image' ) || ( lvl2_key[k] == 'command' ) || ( lvl2_key[k] == 'working_dir' ) 
-                            || ( lvl2_key[k] == 'restart') || ( lvl2_key[k] == 'container_name') || ( lvl2_key[k] == 'tty') ) {
-                        buff = '  ' + '  ' + lvl2_key[k] + ': ' + lvl1_obj[lvl2_key[k]] + '\n';
-                        fs.appendFileSync(dFile, buff);
+                           } else if ( lvl2_key[k] == 'container_name' ) {
+                                 buff = '  ' + '  ' + lvl2_key[k] + ': ' + tmp_name + '\n';
+                                 fs.appendFileSync(dFile, buff);
 
-                    } else if ( ( lvl2_key[k] == 'ports' ) || ( lvl2_key[k] == 'links' ) || ( lvl2_key[k] == 'volumes' ) 
-                            || ( lvl2_key[k] == 'depends_on' ) ){
-                        var lvl2_obj = lvl1_obj[lvl2_key[k]];
-                        //console.log('lvl2_obj: %d ', lvl2_obj.length, lvl2_obj);
+                           } else if (( lvl2_key[k] == 'links' ) || ( lvl2_key[k] == 'volumes' )
+                                            || ( lvl2_key[k] == 'depends_on' ) ){
+                               var lvl2_obj = lvl1_obj[lvl2_key[k]];
+                               //console.log('lvl2_obj: %d ', lvl2_obj.length, lvl2_obj);
 
-                        buff = '  ' + '  ' + lvl2_key[k] + ': ' + '\n';
-                        fs.appendFileSync(dFile, buff);
+                               buff = '  ' + '  ' + lvl2_key[k] + ': ' + '\n';
+                               fs.appendFileSync(dFile, buff);
 
-                        // header 4
-                        for ( m=0; m< lvl2_obj.length; m++ ) {
-                            buff = '  ' + '    - ' +lvl2_obj[m] + '\n';
-                            fs.appendFileSync(dFile, buff);
+                               // header 4
+                               for ( m=0; m< lvl2_obj.length; m++ ) {
+                                 buff = '  ' + '    - ' +lvl2_obj[m] + '\n';
+                                 fs.appendFileSync(dFile, buff);
 
-                        }
+                                }
+                           }  else if ( lvl2_key[k] == 'ports' ) {
 
-                    } else {
-                        buff = '  ' + '  ' + lvl2_key[k] + ': ' + '\n';
-                        fs.appendFileSync(dFile, buff);
+                                      lvl2_obj = lvl1_obj[lvl2_key[k]];
+                                      lvl3_key = Object.keys(lvl2_obj);
 
-                        buff = '  ' + '    - ' + lvl1_obj[lvl2_key[k]] + '\n';
-                        fs.appendFileSync(dFile, buff);
+                                      buff = '  ' + '  ' + lvl2_key[k] + ': ' + '\n';
+                                      fs.appendFileSync(dFile, buff);
+                                      tmp_port = CAPort + v;
 
-                    }
-                }
-                // add a blank line
-                buff = '\n';
-                fs.appendFileSync(dFile, buff);
+                                      buff = '  ' + '    - ' + tmp_port +':' + CAPort + '\n' ;
+                                      //buff = '  ' + '    - ' + tmp_port +':' + tmp_port + '\n' ;
+                                      fs.appendFileSync(dFile, buff);
 
-            }
+                           } else {
+                                buff = '  ' + '  ' + lvl2_key[k] + ': ' + '\n';
+                                fs.appendFileSync(dFile, buff);
+
+                                 buff = '  ' + '    - ' + lvl1_obj[lvl2_key[k]] + '\n';
+                                 fs.appendFileSync(dFile, buff);
+                           }
+                       }
+                       // add a blank line
+                       buff = '\n';
+                       fs.appendFileSync(dFile, buff);
+                  }
+             }
         }
     }
 }
